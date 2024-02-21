@@ -1,13 +1,12 @@
 - block:
 
-    - name: Run ibmcloud cli invite users
+    - name: Run ibmcloud find user
       ansible.builtin.shell: "ibmcloud account user-status {{ item.value.email }}"
       register: ibmcli_output
-#      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
 
   rescue:
 
-    - name: Run ibmcloud cli invite users
+    - name: Run ibmcloud cli invite user
       ansible.builtin.shell: "ibmcloud account user-invite {{ item.value.email }}"
       register: ibmcli_output
       failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
