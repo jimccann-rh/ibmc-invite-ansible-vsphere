@@ -1,14 +1,23 @@
-- name: Run ibmcloud cli invite users
-  ansible.builtin.shell: "ibmcloud account user-invite {{ item.value.email }}"
-  register: ibmcli_output
-  failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+- block:
 
-- name: Output of ibmcli command
-  ansible.builtin.debug:
-    msg: '{{ item }}'
-  loop:
-    - '{{ ibmcli_output }}'
-  tags: never
+    - name: Run ibmcloud cli invite users
+      ansible.builtin.shell: "ibmcloud account user-status {{ item.value.email }}"
+      register: ibmcli_output
+#      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+
+  rescue:
+
+    - name: Run ibmcloud cli invite users
+      ansible.builtin.shell: "ibmcloud account user-invite {{ item.value.email }}"
+      register: ibmcli_output
+      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+    
+    - name: Output of ibmcli command
+      ansible.builtin.debug:
+        msg: '{{ item }}'
+      loop:
+        - '{{ ibmcli_output }}'
+      tags: never
 
 
 - name: Run govc group find
