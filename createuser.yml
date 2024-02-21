@@ -10,24 +10,37 @@
     - '{{ ibmcli_output }}'
   tags: never
 
+
+- name: Run govc group find
+  ansible.builtin.shell: "govc sso.group.ls -search {{ item.value.role  }}"
+  register: grouplookup
+
 - name: Run govc group create
   ansible.builtin.shell: "govc sso.group.create {{ item.value.role  }}"
-  ignore_errors: True
+  when: grouplookup | length > 0
 
-- name: Set password
-  ansible.builtin.set_fact: 
-     my_pass: "{{ pwd_alias }}"
+- name: Run govc user find
+  ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
+  register: userlookup
 
-- name: Show user password
-  ansible.builtin.debug:
-    msg: "password for {{ item.value.kerberos }} {{ my_pass }}"
 
-- name: Run govc user create
-  ansible.builtin.shell: "govc sso.user.create -f {{ item.value.first  }} -l {{ item.value.last }} -m {{ item.value.email }} -p '{{ my_pass }}' {{ item.value.kerberos }}"
+- block:
 
-- name: Run govc update group
-  ansible.builtin.shell: "govc sso.group.update -a {{ item.value.kerberos }} {{ item.value.role  }}"
+    - name: Set password
+      ansible.builtin.set_fact: 
+         my_pass: "{{ pwd_alias }}"
+    
+    - name: Show user password
+      ansible.builtin.debug:
+        msg: "password for {{ item.value.kerberos }} {{ my_pass }}"
+    
+    - name: Run govc user create
+      ansible.builtin.shell: "govc sso.user.create -f {{ item.value.first  }} -l {{ item.value.last }} -m {{ item.value.email }} -p '{{ my_pass }}' {{ item.value.kerberos }}"
+    
+    - name: Run govc update group
+      ansible.builtin.shell: "govc sso.group.update -a {{ item.value.kerberos }} {{ item.value.role  }}"
 
+  when: userlookup | length > 0
 
 #      govc_runner("govc sso.group.create " + newGroup)
 #      govc_runner("govc sso.user.create -f '" + newFirst + "' -l '" + newLast + "' -m '" + newUserEmail + "' -p '" + newUserPassword + "' '" + newUserUsername + "'")
