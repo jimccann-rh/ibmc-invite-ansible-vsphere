@@ -12,6 +12,7 @@
 
 - name: Run govc group create
   ansible.builtin.shell: "govc sso.group.create {{ item.value.role  }}"
+  ignore_errors: True
 
 - name: Set password
   ansible.builtin.set_fact: 
