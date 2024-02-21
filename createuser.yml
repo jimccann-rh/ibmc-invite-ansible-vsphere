@@ -34,7 +34,7 @@
  
     - name: Show user password
       ansible.builtin.debug:
-        msg: "vCenter to login to {{ vcenter }} {{ item.value.kerberos }}@{{ domain }} user this password {{ my_pass }}  | comment(decoration="! ") "
+        msg: "vCenter to login to {{ vcenter }} {{ item.value.kerberos }}@{{ domain }} user this password {{ my_pass }}  | comment(decoration='* ')"
 
     - pause:
     
