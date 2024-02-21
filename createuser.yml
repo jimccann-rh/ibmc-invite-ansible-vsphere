@@ -29,7 +29,8 @@
     - name: Set password and domain
       ansible.builtin.set_fact: 
          my_pass: "{{ pwd_alias }}"
-         domain: "{{ vcenter | regex_search('http://+)', '\\1') }}"
+         domain: "{{ 'vcenter' | urlsplit('hostname') }}"
+         #domain: "{{ 'vcenter' | regex_search('http://+)', '\\1') }}"
  
     - name: Show user password
       ansible.builtin.debug:
