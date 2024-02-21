@@ -1,4 +1,6 @@
 - hosts: localhost
+  vars:
+    pwd_alias: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
 
   tasks:
 
@@ -28,17 +30,9 @@
       register: ibmcli_output
       failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
 
-    - name: Run ibmcloud cli invite users
-      ansible.builtin.shell: "ibmcloud account user-invite {{ item.value.email }}"
-      register: ibmcli_output
-      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+    - name: Create users
+      include_tasks: createusers.yml
       loop: "{{ users.dict|dict2items }}"
 
-    - name: Output of ibmcli command
-      ansible.builtin.debug:
-        msg: '{{ item }}'
-      loop:
-        - '{{ ibmcli_output }}'
-      tags: never
 
 
