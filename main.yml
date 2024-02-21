@@ -23,6 +23,10 @@
       loop: "{{ users.dict|dict2items }}"
       tags: never
 
+    - name: Run ibmcloud login
+      ansible.builtin.shell: "ibmcloud login --no-region"
+      register: ibmcli_output
+      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
 
     - name: Run ibmcloud cli invite users
       ansible.builtin.shell: "ibmcloud account user-invite {{ item.value.email }}"
