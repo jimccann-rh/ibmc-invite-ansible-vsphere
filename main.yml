@@ -1,0 +1,40 @@
+- hosts: localhost
+
+  tasks:
+
+    - name: reading csv file
+      community.general.read_csv:
+        path: usernames.csv
+        key: kerberos
+      register: users
+
+    - ansible.builtin.debug:
+        msg: "{{ users }}"
+      tags: never
+
+    - ansible.builtin.debug:
+        msg: "{{ item.key }}:
+              {{ item.value.kerberos }},
+              {{ item.value.email }},
+              {{ item.value.role }},
+              {{ item.value.first }},
+              {{ item.value.last }},
+              {{ item.value.twrole }}"
+      loop: "{{ users.dict|dict2items }}"
+      tags: never
+
+
+    - name: Run ibmcloud cli invite users
+      ansible.builtin.shell: "ibmcloud account user-invite {{ item.value.email }}"
+      register: ibmcli_output
+      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+      loop: "{{ users.dict|dict2items }}"
+
+    - name: Output of ibmcli command
+      ansible.builtin.debug:
+        msg: '{{ item }}'
+      loop:
+        - '{{ ibmcli_output }}'
+      tags: never
+
+
