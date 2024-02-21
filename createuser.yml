@@ -23,7 +23,7 @@
     msg: "password for {{ item.value.kerberos }} {{ my_pass }}"
 
 - name: Run govc user create
-  ansible.builtin.shell: "govc sso.user.create -f {{ item.value.first  }} -l {{ item.value.last }} -m {{ item.value.email }} -p {{ my_pass }} {{ item.value.kerberos }}"
+  ansible.builtin.shell: "govc sso.user.create -f {{ item.value.first  }} -l {{ item.value.last }} -m {{ item.value.email }} -p '{{ my_pass }}' {{ item.value.kerberos }}"
 
 - name: Run govc update group
   ansible.builtin.shell: "govc sso.user.update -a {{ item.value.kerberos }} {{ item.value.role  }}"
