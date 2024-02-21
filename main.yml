@@ -1,6 +1,7 @@
 - hosts: localhost
   vars:
-    pwd_alias: "{{ lookup('password', '/dev/null length=15') }}"
+    pwd_alias: "{{ lookup('community.general.random_string', min_lower=1, min_upper=1, min_special=1, min_numeric=1) }}"
+    #pwd_alias: "{{ lookup('password', '/dev/null length=15') }}"
 
   tasks:
 
