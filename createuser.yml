@@ -30,12 +30,12 @@
       ansible.builtin.set_fact: 
          my_pass: "{{ pwd_alias }}"
          domain: "{{ vcenter | urlsplit('hostname') }}"
-         domainnovc: "{{ vcenter.split('.') | list | getitem(1) }}"
+         subdomain: "{{ domain.split('.') | list | getitem(1) }}"
          #domain: "{{ 'vcenter' | regex_search('http://+)', '\\1') }}"
  
     - name: Show user password
       ansible.builtin.debug:
-        msg: "vCenter to login to {{ vcenter }} login in with this info {{ item.value.kerberos }}@{{ domainnovc }} user this password {{ my_pass }}"
+        msg: "vCenter to login to {{ vcenter }} login in with this info {{ item.value.kerberos }}@{{ subdomain }} user this password {{ my_pass }}"
 
     - pause:
     
