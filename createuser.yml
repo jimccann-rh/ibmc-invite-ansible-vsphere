@@ -33,7 +33,7 @@
 
     - name: Set subdomain
       ansible.builtin.set_fact: 
-         subdomain: "{{ domain.split('.') | list }}"
+         subdomain: "{{ domain.split('.') | list | getitem(1) }}"
          #domain: "{{ 'vcenter' | regex_search('http://+)', '\\1') }}"
  
     - name: Show user password
