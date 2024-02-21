@@ -26,8 +26,8 @@
 
 - block:
 
-   - name: Run govc user find
-     ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
+    - name: Run govc user find
+      ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
 
   resuce:
 
