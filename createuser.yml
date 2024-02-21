@@ -30,6 +30,9 @@
       ansible.builtin.set_fact: 
          my_pass: "{{ pwd_alias }}"
          domain: "{{ vcenter | urlsplit('hostname') }}"
+
+    - name: Set subdomain
+      ansible.builtin.set_fact: 
          subdomain: "{{ domain.split('.') | list }}"
          #domain: "{{ 'vcenter' | regex_search('http://+)', '\\1') }}"
  
