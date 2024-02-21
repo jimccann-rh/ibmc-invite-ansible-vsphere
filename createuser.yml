@@ -8,7 +8,7 @@
     msg: '{{ item }}'
   loop:
     - '{{ ibmcli_output }}'
-  tags: never
+#  tags: never
 
 
 - name: Run govc group find
@@ -41,6 +41,8 @@
     - name: Show user creds
       ansible.builtin.debug:
         msg: "vCenter to login to * {{ vcenter }} * login in with this user ** {{ item.value.kerberos }}@{{ subdomain }} ** this is the password ***     {{ my_pass }}     ***"
+
+    - pause:
 
     - name: Run govc user create
       ansible.builtin.shell: "govc sso.user.create -f {{ item.value.first  }} -l {{ item.value.last }} -m {{ item.value.email }} -p '{{ my_pass }}' {{ item.value.kerberos }}"
