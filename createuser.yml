@@ -29,7 +29,7 @@
     - name: Run govc user find
       ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
 
-  resuce:
+  rescue:
 
     - name: Set password
       ansible.builtin.set_fact: 
