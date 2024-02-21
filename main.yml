@@ -30,8 +30,8 @@
       register: ibmcli_output
       failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
 
-    - name: Create users
-      include_tasks: createusers.yml
+    - name: Create user
+      include_tasks: createuser.yml
       loop: "{{ users.dict|dict2items }}"
 
 
