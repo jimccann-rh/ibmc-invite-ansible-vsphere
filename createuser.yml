@@ -33,7 +33,7 @@
 
     - name: Set subdomain
       ansible.builtin.set_fact: 
-         subdomain: "{{ domain.split('.')[1-] }}"
+         subdomain: "{{ domain.split('.')[1] }}"
          #subdomain: "{{ domain | regex_replace('^.+\\.', '') }}"
          #subdomain: "{{ domain.split('.') | list | getitem(1) }}"
          #domain: "{{ 'vcenter' | regex_search('http://+)', '\\1') }}"
