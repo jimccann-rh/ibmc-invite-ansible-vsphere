@@ -28,6 +28,7 @@
 
     - name: Run govc user find
       ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
+      ignore_errors: true
 
   rescue:
 
