@@ -19,16 +19,10 @@
   ansible.builtin.shell: "govc sso.group.create {{ item.value.role  }}"
   when: grouplookup == ""
 
-- name: Run govc user find
-  ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
-  register: userlookup
-
-
 - block:
 
     - name: Run govc user find
       ansible.builtin.shell: "govc sso.user.id {{ item.value.kerberos }}"
-      ignore_errors: true
 
   rescue:
 
