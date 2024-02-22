@@ -18,6 +18,9 @@
         - '{{ ibmcli_output }}'
       tags: never
 
+    - pause:
+        seconds: 10
+
     - name: Get ibmcloud cli add user id
       ansible.builtin.shell: 'ibmcloud sl call-api Account getUsers --mask "id,email" > data.json'
       register: ibmcli_output_id
