@@ -18,6 +18,41 @@
         - '{{ ibmcli_output }}'
       tags: never
 
+    - name: Get ibmcloud cli add user id
+      ansible.builtin.shell: 'ibmcloud sl call-api Account getUsers --mask "id,email" > data.json'
+      register: ibmcli_output_id
+      failed_when: ( ibmcli_output_id.rc not in [ 0, 1 ] )
+    
+    - ansible.builtin.set_fact:
+        emailuser: "{{ item.value.email }}"
+        user_id: ""
+    - ansible.builtin.debug:
+        msg: "{{ emailuser }}"
+    
+    - name: Find user with email
+      set_fact:
+        user_id: "{{ loopuser.id }}"
+      when: loopuser.email == emailuser
+      loop: "{{ jsonVar }}"
+      loop_control:
+        loop_var: loopuser
+    
+    - name: Print the ID
+      ansible.builtin.debug:
+        msg: "User ID: {{ user_id }}"
+    
+    - name: Run ibmcloud cli add user to ssl vpn
+      ansible.builtin.shell: "#ibmcloud sl user vpn-enable {{ user_id }}"
+      register: ibmcli_output
+      failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+
+    - name: Output of ibmcli command
+      ansible.builtin.debug:
+        msg: '{{ item }}'
+      loop:
+        - '{{ ibmcli_output }}'
+      tags: never
+
 
 - name: Run govc group find
   ansible.builtin.shell: "govc sso.group.ls -search {{ item.value.role  }}"
