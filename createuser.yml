@@ -42,7 +42,7 @@
         msg: "User ID: {{ user_id }}"
     
     - name: Run ibmcloud cli add user to ssl vpn
-      ansible.builtin.shell: "#ibmcloud sl user vpn-enable {{ user_id }}"
+      ansible.builtin.shell: "ibmcloud sl user vpn-enable {{ user_id }}"
       register: ibmcli_output
       failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
 
