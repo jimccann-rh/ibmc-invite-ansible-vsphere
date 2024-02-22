@@ -54,7 +54,7 @@
         msg: '{{ item }}'
       loop:
         - '{{ ibmcli_output }}'
-      tags: never
+#      tags: never
 
 
 - name: Run govc group find
