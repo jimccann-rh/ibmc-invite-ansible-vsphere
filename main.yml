@@ -4,6 +4,7 @@
     #pwd_alias: "{{ lookup('password', '/dev/null length=15') }}"
     vcenter: "{{ lookup('ansible.builtin.env', 'GOVC_URL') }}"
     jsonVar: "{{ lookup('file', 'data.json') | from_json }}" 
+    doc: ""
   tasks:
 
     - name: reading csv file

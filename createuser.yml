@@ -87,7 +87,9 @@
  
     - name: Show user creds
       ansible.builtin.debug:
-        msg: "vCenter to login to * {{ vcenter }} * login in with this user ** {{ item.value.kerberos }}@{{ subdomain }} ** this is the password ***     {{ my_pass }}     ***"
+        msg:
+          - "vCenter to login to * {{ vcenter }} * login in with this user ** {{ item.value.kerberos }}@{{ subdomain }} ** this is the password ***     {{ my_pass }}     ***"
+          - "{{ doc }}"
 
 #    - pause:
 
