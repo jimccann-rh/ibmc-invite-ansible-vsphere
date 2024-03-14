@@ -4,7 +4,8 @@
     #pwd_alias: "{{ lookup('password', '/dev/null length=15') }}"
     vcenter: "{{ lookup('ansible.builtin.env', 'GOVC_URL') }}"
     jsonVar: "{{ lookup('file', 'data.json') | from_json }}" 
-    doc: ""
+    doc: "https://docs.google.com/document/d/1q-fANN8RpBjowjpHiUrT4ClesBEZkZplIJC05jyBnGQ/edit#heading=h.vxrwxcbk1uw7"
+    overide: false
   tasks:
 
     - name: reading csv file
@@ -33,6 +34,10 @@
       register: ibmcli_output
       failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
 
+    - name: Include vars of subnetid.yml
+      ansible.builtin.include_vars:
+        file: subnetid.yml
+
     - name: Create user
       include_tasks: createuser.yml
       loop: "{{ users.dict|dict2items }}"
@@ -41,5 +46,6 @@
       ansible.builtin.shell: "ibmcloud logout"
       register: ibmcli_output
       failed_when: ( ibmcli_output.rc not in [ 0, 1 ] )
+
 
 
